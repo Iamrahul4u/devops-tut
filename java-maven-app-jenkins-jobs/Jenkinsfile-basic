@@ -8,7 +8,7 @@ pipeline {
             steps{
                 script{
                     sh '''
-                        cd java-maven-app-jenkins-jobs'
+                        cd java-maven-app-jenkins-jobs
                         mvn package
                     '''
                 }

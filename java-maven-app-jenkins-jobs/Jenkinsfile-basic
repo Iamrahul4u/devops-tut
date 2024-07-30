@@ -2,9 +2,9 @@
 def gv
 pipeline {
     agent none
-    parameters{
-        choice(name:'Version',choices:['1.0.0','1.0.1','1.0.2'],description:"Select a choice")
-        booleanParam(name:'executeTests',defaultValue:true,description:"")
+    parameters {
+        choice(name: 'Version', choices: ['1.0.0', '1.0.1', '1.0.2'], description: "Select a choice")
+        booleanParam(name: 'executeTests', defaultValue: true, description: "")
     }
     stages {
         stage('build') {
@@ -15,8 +15,8 @@ pipeline {
             }
         }
         stage('test') {
-            when{
-                expression{
+            when {
+                expression {
                     params.executeTests
                 }
             }
@@ -27,16 +27,12 @@ pipeline {
             }
         }
         stage('deploy') {
-
+            environment {
+                USERNAME = credentials("nexus-data")
+            }
             steps {
-                {
-                    environment{
-                        USERNAME=credentials("nexus-data")
-                    }
-                }
                 script {
-                   gv.testApp()
-                    
+                    gv.testApp()
                 }
             }
         }

@@ -19,7 +19,7 @@ pipeline {
                 script {
                     withCredentials([usernamePassword(credentialsId: 'docker-hub', passwordVariable: 'Pass', usernameVariable: 'User')]) {
                     sh '''
-                        cd java-maven-app-jenkins-jobs'
+                        cd java-maven-app-jenkins-jobs
                         docker build -t   iamrahul4u/java-maven-app-devops:1.1
                         echo $Pass | docker login -u $User  --password-stdin
                         docker push iamrahul4u/java-maven-app-devops:tagname:1.1

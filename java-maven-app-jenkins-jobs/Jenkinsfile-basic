@@ -34,7 +34,7 @@ pipeline {
         }
         stage('deploy') {
             environment {
-                USERNAME = credentials("nexus-data")
+                USERNAME = credentials("nexus-creds")
             }
             steps {
                 script {

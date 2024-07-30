@@ -1,16 +1,25 @@
 #!/usr/bin/env groovy
-
+def gv
 pipeline {
     agent none
+    parameters{
+        choice(name:'Version',choices:['1.0.0','1.0.1','1.0.2'],description:"Select a choice")
+        booleanParam(name:'executeTests',defaultValue:true,description:"")
+    }
     stages {
         stage('build') {
             steps {
                 script {
-                    echo "Building the application..."
+                    gv.buildApp();
                 }
             }
         }
         stage('test') {
+            when{
+                expression{
+                    params.executeTests
+                }
+            }
             steps {
                 script {
                     echo "Testing the application..."
@@ -18,9 +27,16 @@ pipeline {
             }
         }
         stage('deploy') {
+
             steps {
+                {
+                    environment{
+                        USERNAME=credentials("nexus-data")
+                    }
+                }
                 script {
-                    echo "Deploying the application..."
+                   gv.testApp()
+                    
                 }
             }
         }

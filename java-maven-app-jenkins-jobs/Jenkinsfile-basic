@@ -1,44 +1,23 @@
-def gv
 pipeline {
     agent any
-    parameters {
-        choice(name: 'Version', choices: ['1.0.0', '1.0.1', '1.0.2'], description: "Select a choice")
-        booleanParam(name: 'executeTests', defaultValue: true, description: "")
+    tools {
+        maven 'maven'
     }
     stages {
         stage("init"){
             steps{
                 script{
-                    gv = load 'java-maven-app-jenkins-jobs/script.groovy'
+                    sh 'cd java-maven-app-jenkins-jobs'
+                    sh 'ls -a'
                 }
             }
         }
-        stage('build') {
+        stage("build image") {
             steps {
                 script {
-                    gv.buildApp();
-                }
-            }
-        }
-        stage('test') {
-            when {
-                expression {
-                    params.executeTests
-                }
-            }
-            steps {
-                script {
-                   gv.testApp()
-                }
-            }
-        }
-        stage('deploy') {
-            environment {
-                USERNAME = credentials("nexus-creds")
-            }
-            steps {
-                script {
-                    gv.testApp()
+                    withCredentials([usernamePassword(credentialsId: 'docker-hub', passwordVariable: 'Pass', usernameVariable: 'User')]) {
+                        sh 'ls'
+                    }
                 }
             }
         }

@@ -4,8 +4,11 @@ def buildApp(){
 
 }
 def testApp(){
-    echo "Deploying the application ${params.version} "
+    echo "testing the application ${params.version} "
     sh 'printenv'
+}
+def deployApp(){
+    echo "Deploying the application  "
 }
 
 return this
